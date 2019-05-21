@@ -78,7 +78,6 @@ pylith::feassemble::Integrator::initialize(const pylith::topology::Field& soluti
     _observers = _physics->getObservers();assert(_observers); // Memory managed by Python
     _observers->setPhysicsImplementation(this);
 
-    // _auxiliaryField->view("MATERIAL AUXILIARY FIELD"); // :DEBUG: TEMPORARY
     const bool infoOnly = true;
     _observers->notifyObservers(0.0, 0, solution, infoOnly);
 
@@ -108,12 +107,13 @@ pylith::feassemble::Integrator::poststep(const PylithReal t,
                                          const PylithReal dt,
                                          const pylith::topology::Field& solution) {
     PYLITH_METHOD_BEGIN;
-    PYLITH_JOURNAL_DEBUG("poststep(t="<<t<<", dt="<<dt<<") empty method");
+    PYLITH_JOURNAL_DEBUG("poststep(t="<<t<<", dt="<<dt<<")");
 
     _updateStateVars(t, dt, solution);
 
     const bool infoOnly = false;
     assert(_observers);
+    _computeDerivedField(t, dt, solution);
     _observers->notifyObservers(t, tindex, solution, infoOnly);
 
     PYLITH_METHOD_END;
@@ -155,6 +155,8 @@ pylith::feassemble::Integrator::_updateStateVars(const PylithReal t,
     PYLITH_METHOD_BEGIN;
     PYLITH_JOURNAL_DEBUG("_updateStateVars(t="<<t<<", dt="<<dt<<", solution="<<solution.label()<<") empty method");
 
+    // Default is to do nothing.
+
     PYLITH_METHOD_END;
 } // _updateStateVars
 
@@ -166,12 +168,12 @@ pylith::feassemble::Integrator::_computeDerivedField(const PylithReal t,
                                                      const PylithReal dt,
                                                      const pylith::topology::Field& solution) {
     PYLITH_METHOD_BEGIN;
-    PYLITH_JOURNAL_DEBUG("_computeDerivedField(t="<<t<<", dt="<<dt<<", solution="<<solution.label()<<")");
+    PYLITH_JOURNAL_DEBUG("_computeDerivedField(t="<<t<<", dt="<<dt<<", solution="<<solution.label()<<") empty method");
 
-    PYLITH_JOURNAL_ERROR(":TODO: @brad Implement Integrator::_computeDerivedField().");
+    // Default is to do nothing.
 
     PYLITH_METHOD_END;
-} // _computeDerivedFields
+} // _computeDerivedField
 
 
 // End of file
