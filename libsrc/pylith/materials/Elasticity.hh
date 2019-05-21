@@ -67,30 +67,6 @@ public:
      */
     bool useBodyForce(void) const;
 
-    /** Should compute Cauchy stress for observers?
-     *
-     * @param[in] value Flag indicating to compute Cauchy stress.
-     */
-    void shouldComputeCauchyStress(const bool value);
-
-    /** Should compute Cauchy stress for observers?
-     *
-     * @returns True if computing Cauchy stress for observers.
-     */
-    bool shouldComputeCauchyStress(void) const;
-
-    /** Should compute Cauchy strain for observers.
-     *
-     * @param[in] value Flag indicating to compute Cauchy strain.
-     */
-    void shouldComputeCauchyStrain(const bool value);
-
-    /** Should compute Cauchy strain for observers?
-     *
-     * @returns True if computing Cauchy strain for observers.
-     */
-    bool shouldComputeCauchyStrain(void) const;
-
     /** Set bulk rheology.
      *
      * @param[in] rheology Bulk rheology for elasticity.
@@ -146,6 +122,12 @@ protected:
      */
     pylith::feassemble::AuxiliaryFactory* _getAuxiliaryFactory(void);
 
+    /** Get derived factory associated with physics.
+     *
+     * @return Derived factory for physics object.
+     */
+    pylith::topology::FieldFactory* _getDerivedFactory(void);
+
     // PRIVATE MEMBERS /////////////////////////////////////////////////////////////////////////////////////////////////
 private:
 
@@ -194,9 +176,8 @@ private:
 
     bool _useInertia; ///< Flag to include inertial term.
     bool _useBodyForce; ///< Flag to include body force term.
-    bool _shouldComputeCauchyStress; ///< Flag to compute Cauchy stress for observers.
-    bool _shouldComputeCauchyStrain; ///< Flag to compute Cauchy strain for observers.
     pylith::materials::RheologyElasticity* _rheology; ///< Bulk rheology for elasticity.
+    pylith::materials::DerivedFactoryElasticity* _derivedFactory;
 
     // NOT IMPLEMENTED /////////////////////////////////////////////////////////////////////////////////////////////////
 private:
