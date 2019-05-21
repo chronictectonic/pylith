@@ -78,9 +78,7 @@ pylith::feassemble::IntegratorDomain::deallocate(void) {
 
     pylith::feassemble::Integrator::deallocate();
 
-    _materialMesh = NULL; // :TODO: Currently using shared pointer. Delete when we have mesh associated with material
-                          // subDM.
-
+    delete _materialMesh;_materialMesh = NULL;
     delete _updateState;_updateState = NULL;
 
     PYLITH_METHOD_END;
