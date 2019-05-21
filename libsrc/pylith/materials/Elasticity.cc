@@ -49,7 +49,7 @@ typedef pylith::feassemble::IntegratorDomain::ProjectKernels ProjectKernels;
 pylith::materials::Elasticity::Elasticity(void) :
     _useInertia(false),
     _useBodyForce(false),
-    _shouldComputeCauchyStress(true),
+    _shouldComputeCauchyStress(false),
     _shouldComputeCauchyStrain(false),
     _rheology(NULL) {
     pylith::utils::PyreComponent::setName("elasticity");
