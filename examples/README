@@ -1,0 +1,122 @@
+All:
+  HDF5 output
+
+2d/box
+  tri mesh
+  quad mesh
+  two materials w/throughgoing fault
+
+  Step01: simple shear w/Dirichlet BC
+    Tri mesh
+    Dirichlet BC (SimpleDB)
+    IsotropicLinearElasticity (SimpleDB)
+    Domain output
+    Material output
+  Step02: simple shear w/Dirichlet + Neumann BC
+    Quad mesh
+    Dirichlet BC (SimpleDB)
+    Neumann BC (UniformDB)
+    IsotropicLinearElasticity (SimpleDB)
+    Domain output
+    Material output
+  Step03: prescribed slip
+  Exercises
+    Change to other mesh
+    Change material properties
+    Change BC to give axial extension or compression in the +x direction
+
+3d/box
+  tet mesh
+  hex mesh
+
+2d/strike-slip w/buried fault + branch
+  tri mesh
+  quad mesh
+  three materials
+
+2d/reverse w/buried fault + splay fault
+  tri mesh
+  quad mesh
+  three materials: upper crust, wedge, lower crust
+
+  Step01: gravitational body forces (no reference state)
+  Step02: gravitational body forces (reference state)
+    Reference state (SimpleDB)
+  Step03: gravitational body forces + incompressible elasticity
+  Step04: gravitational body forces + incompressible elasticity
+    Add initial condition to Step03 (SimpleDB)
+  Step05: distributed surface load
+    Neumann BC (SimpleGridDB)
+  Step06: coseismic slip (main fault)
+  Step07: coseismic slip (main + splay fault)
+  Step08: coseismic slip + viscoelastic relaxation w/linear Maxwell
+  Step09: coseismic slip + viscoelastic relaxation w/powerlaw
+
+  Exercises
+    Compare basis order 1 and 2 for Steps 1 and 2
+    Change material properties
+
+2d/subduction :UPDATE:
+
+2d/magmachamber :LATER:
+
+3d/subduction :UPDATE:
+
+3d/strike-slip :LATER:
+
+debugging :UPDATE:
+  quadrature orders don't match
+  typos in component names
+  
+
+meshing [no changes]
+
+Concepts:
+  * Output
+    + domain
+      - solution
+    + boundary
+      - solution
+    + fault
+    + material
+      - auxiliary subfields
+      - derived field
+      - solution
+    + points
+      - solution
+    + Dirichlet BC
+      - auxiliary field
+    + Neumann BC
+      - auxiliary field
+    + Add field to HDF5 and update Xdmf
+    + Projection of field to basis order 0/1
+  * Spatial databases
+    + Generate spatial database using Python
+    + SimpleGridDB
+    + UniformDB
+  * Simulation
+    + Neumann BC
+      - side loads
+      - surface loads
+    + Dirichlet BC
+      - roller BC
+      - constant rate BC
+    + Initial conditions
+    + Elasticity
+      - Referense state
+      - Body forces
+      - Gravitational body forces
+      - Rheologies
+        * IsotropicLinearElasticity
+	* IsotropicLinearMaxwell
+	* IsotropicPowerlaw
+	* IsotropicDruckerPrager
+    + Incompressible elasticity
+      - gravitational body forces
+      - initial conditions
+    + Fault
+      + Prescribed slip step function, single rupture
+      + Prescribed slip step function + creep, multiple ruptures
+  * Order of basis functions
+    - gravity w/1st order vs 2nd order
+
