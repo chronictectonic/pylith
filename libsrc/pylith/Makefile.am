@@ -125,6 +125,7 @@ libpylith_la_SOURCES = \
 	topology/FieldBase.cc \
 	topology/Field.cc \
 	topology/Fields.cc \
+	topology/SuperField.cc \
 	topology/FieldFactory.cc \
 	topology/FieldOps.cc \
 	topology/FieldQuery.cc \

@@ -24,6 +24,7 @@
 #include "pylith/topology/Mesh.hh" // USES Mesh
 #include "pylith/topology/MeshOps.hh" // USES createSubdomainMesh()
 #include "pylith/topology/Field.hh" // USES Field
+#include "pylith/topology/SuperField.hh" // USES SuperField
 #include "pylith/topology/CoordsVisitor.hh" // USES CoordsVisitor
 
 #include "spatialdata/spatialdb/GravityField.hh" // HASA GravityField
@@ -58,7 +59,8 @@ pylith::feassemble::IntegratorDomain::IntegratorDomain(pylith::problems::Physics
     Integrator(physics),
     _materialId(0),
     _materialMesh(NULL),
-    _updateState(NULL) {
+    _updateState(NULL),
+    _superSolnAux(NULL) {
     GenericComponent::setName("integratordomain");
 } // constructor
 
@@ -80,6 +82,7 @@ pylith::feassemble::IntegratorDomain::deallocate(void) {
 
     delete _materialMesh;_materialMesh = NULL;
     delete _updateState;_updateState = NULL;
+    delete _superSolnAux;_superSolnAux = NULL;
 
     PYLITH_METHOD_END;
 } // deallocate
@@ -203,6 +206,12 @@ pylith::feassemble::IntegratorDomain::initialize(const pylith::topology::Field& 
 
         assert(_auxiliaryField);
         _updateState->initialize(*_auxiliaryField, solution);
+    } // if
+
+    if (_derivedField) {
+        assert(_auxiliaryField);
+        delete _superSolnAux;_superSolnAux = new pylith::topology::SuperField(solution, *_auxiliaryField);assert(_superSolnAux);
+        _superSolnAux->initialize();
     } // if
 
     PYLITH_METHOD_END;
@@ -426,12 +435,14 @@ pylith::feassemble::IntegratorDomain::_computeDerivedField(const PylithReal t,
     PYLITH_METHOD_BEGIN;
     PYLITH_JOURNAL_DEBUG("_computeDerivedField(t="<<t<<", dt="<<dt<<", solution="<<solution.label()<<") empty method");
 
-    if (0 == _kernelsDerivedField.size()) {
+    if (!_derivedField) {
         PYLITH_METHOD_END;
     } // if
 
+    assert(_superSolnAux);
+    _superSolnAux->copyTo();
+
     assert(_derivedField);
-    assert(_auxiliaryField);
     PetscDM derivedDM = _derivedField->dmMesh();
     _setKernelConstants(*_derivedField, dt);
 
@@ -443,9 +454,13 @@ pylith::feassemble::IntegratorDomain::_computeDerivedField(const PylithReal t,
     } // for
 
     PetscErrorCode err = 0;
-    err = PetscObjectCompose((PetscObject) derivedDM, "dmAux", (PetscObject) _auxiliaryField->dmMesh());PYLITH_CHECK_ERROR(err);
-    err = PetscObjectCompose((PetscObject) derivedDM, "A", (PetscObject) _auxiliaryField->localVector());PYLITH_CHECK_ERROR(err);
-    err = DMProjectFieldLocal(derivedDM, t, solution.localVector(), kernelsArray, INSERT_VALUES, _derivedField->localVector());PYLITH_CHECK_ERROR(err);
+
+    // Attach super field as auxiliary to derived field for use in derived field kernel.
+    assert(_superSolnAux);
+    err = PetscObjectCompose((PetscObject) derivedDM, "dmAux", (PetscObject) _superSolnAux->getDM());PYLITH_CHECK_ERROR(err);
+    err = PetscObjectCompose((PetscObject) derivedDM, "A",     (PetscObject) _superSolnAux->getLocalVector());PYLITH_CHECK_ERROR(err);
+
+    err = DMProjectFieldLocal(derivedDM, t, _derivedField->localVector(), kernelsArray, INSERT_VALUES, _derivedField->localVector());PYLITH_CHECK_ERROR(err);
     delete[] kernelsArray;kernelsArray = NULL;
 
     PYLITH_METHOD_END;

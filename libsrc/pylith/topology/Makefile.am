@@ -30,6 +30,7 @@ subpkginclude_HEADERS = \
 	FieldOps.hh \
 	FieldQuery.hh \
 	Fields.hh \
+	SuperField.hh \
 	Mesh.hh \
 	Mesh.icc \
 	MeshOps.hh \
