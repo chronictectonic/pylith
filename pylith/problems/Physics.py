@@ -22,6 +22,7 @@ from pylith.utils.PetscComponent import PetscComponent
 from .problems import Physics as ModulePhysics
 
 from pylith.meshio.OutputPhysics import OutputPhysics
+from pylith.utils.NullComponent import NullComponent
 
 
 # Factories for items in facility arrays
@@ -80,7 +81,8 @@ class Physics(PetscComponent, ModulePhysics):
         for observer in self.observers.components():
             observer.preinitialize(self)
 
-        ModulePhysics.setAuxiliaryFieldDB(self, self.auxiliaryFieldDB)
+        if not isinstance(self.auxiliaryFieldDB, NullComponent):
+            ModulePhysics.setAuxiliaryFieldDB(self, self.auxiliaryFieldDB)
 
         for subfield in self.auxiliarySubfields.components():
             fieldName = subfield.aliases[-1]
