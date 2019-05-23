@@ -330,7 +330,6 @@ private:
     pylith::topology::Mesh* _materialMesh; ///< Mesh associated with material.
 
     pylith::feassemble::UpdateStateVars* _updateState; ///< Data structure for layout needed to update state vars.
-    pylith::topology::SuperField* _superSolnAux; ///< Super field for solutin field + auxiliary field.
 
     // NOT IMPLEMENTED /////////////////////////////////////////////////////////////////////////////////////////////////
 private:

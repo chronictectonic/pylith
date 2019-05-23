@@ -41,7 +41,6 @@ namespace pylith {
         class FieldBase;
         class Field;
         class Fields;
-        class SuperField;
         class VecVisitorMesh;
         class VecVisitorSubmesh;
 
