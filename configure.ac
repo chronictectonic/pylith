@@ -114,11 +114,7 @@ CIT_HEADER_MPI
 
 # PETSC
 AC_LANG(C)
-<<<<<<< HEAD
 CIT_PATH_PETSC([3.11.2])
-=======
-CIT_PATH_PETSC([3.11.1])
->>>>>>> Updates for PETSc knepley/pylith.
 CIT_HEADER_PETSC
 CIT_CHECK_LIB_PETSC
 
