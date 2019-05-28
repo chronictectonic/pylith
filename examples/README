@@ -3,39 +3,71 @@ All:
 
 2d/box
   tri mesh
-  quad mesh
-  two materials w/throughgoing fault
+  quad mesh (default)
+  Material: single, isotropic linear elasticity; uniform properties
+  Output: domain, material, bc
+  basis order (default: 1); quad order (default: 1)
 
-  Step01: simple shear w/Dirichlet BC
-    Tri mesh
+  Step01: axial extension w/Dirichlet BC
+    Dirichlet BC (UniformDB)
+    IsotropicLinearElasticity (UniformDB)
+  Step02: simple shear w/Dirichlet BC
     Dirichlet BC (SimpleDB)
-    IsotropicLinearElasticity (SimpleDB)
-    Domain output
-    Material output
-  Step02: simple shear w/Dirichlet + Neumann BC
-    Quad mesh
+    IsotropicLinearElasticity (UniformDB)
+  Step03: simple shear w/Dirichlet + Neumann BC
     Dirichlet BC (SimpleDB)
     Neumann BC (UniformDB)
     IsotropicLinearElasticity (SimpleDB)
-    Domain output
-    Material output
-  Step03: prescribed slip
+  Step03: time-dependent shear w/Dirichlet and Neumenn BC
+    Dirichlet BC (UniformDB)
+    Neumann BC (UniformDB)
+    IsotropicLinearElasticity (SimpleDB)
   Exercises
-    Change to other mesh
+    Change to tri mesh
     Change material properties
-    Change BC to give axial extension or compression in the +x direction
+    Change BC to give axial compression in the +y direction
+    Change basis and quadrature order
 
 3d/box
-  tet mesh
+  tet mesh (default)
   hex mesh
+  two materials (upper & lower crust)
 
-2d/strike-slip w/buried fault + branch
+  Step01: axial extension w/Dirichlet BC
+    Dirichlet BC (UniformDB)
+    IsotropicLinearElasticity (2x UniformDB)
+  Step02: simple shear w/Dirichlet BC
+    Dirichlet BC (SimpleDB)
+    IsotropicLinearElasticity (1x SimpleDB)
+  Step03: simple shear w/Dirichlet + Neumann BC
+    Dirichlet BC (SimpleDB)
+    Neumann BC (UniformDB)
+    IsotropicLinearElasticity (1x SimpleDB)
+  Step03: time-dependent shear w/Dirichlet and Neumenn BC
+    Dirichlet BC (UniformDB)
+    Neumann BC (UniformDB)
+    IsotropicLinearElasticity (1x SimpleDB)
+  Exercises
+    Change to hex mesh
+    Change material properties
+    Change BC to give axial compression in the +y direction
+    Change basis and quadrature order
+
+
+2d/strike-slip w/throughgoing fault
   tri mesh
-  quad mesh
-  three materials
+  quad mesh (default)
+  two materials (25% contrast)
+
+  Step01: static w/prescribed slip; fixed boundaries
+  Step02: quasistatic: boundaries move; fault catches up w/prescribed slip
+  Step03: quasistatic: multiple earthquake cycles w/presscribed slip
+
+  Exercises
+    Change to tri mesh
 
 2d/reverse w/buried fault + splay fault
-  tri mesh
+  tri mesh (default)
   quad mesh
   three materials: upper crust, wedge, lower crust
 
@@ -53,8 +85,12 @@ All:
   Step09: coseismic slip + viscoelastic relaxation w/powerlaw
 
   Exercises
+    Change to quad mesh
     Compare basis order 1 and 2 for Steps 1 and 2
     Change material properties
+
+3d/strike-slip w/throughgoing fault :LATER:?
+  match 2d/strike-slip w/throughgoing fault
 
 2d/subduction :UPDATE:
 
@@ -67,7 +103,7 @@ All:
 debugging :UPDATE:
   quadrature orders don't match
   typos in component names
-  
+
 
 meshing [no changes]
 
@@ -119,4 +155,3 @@ Concepts:
       + Prescribed slip step function + creep, multiple ruptures
   * Order of basis functions
     - gravity w/1st order vs 2nd order
-
