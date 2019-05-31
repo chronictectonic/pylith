@@ -55,8 +55,8 @@ pylith step05_sheardisptract.cfg
 
 1. Change the mesh to the tri mesh.
 
-  a. Change the setting in the pylithapp.cfg file.
-  b. Override the current setting using the command line.
+  * Change the setting in the pylithapp.cfg file.
+  * Override the current setting using the command line.
   
 2.  Reduce the shear modulus while keeping the bulk modulus the same.
 
